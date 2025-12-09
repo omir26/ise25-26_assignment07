@@ -33,7 +33,6 @@ import static de.seuhd.campuscoffee.api.openapi.Resource.REVIEW;
 @RequiredArgsConstructor
 public class ReviewController extends CrudController<Review, ReviewDto, Long> {
 
-    // TODO: Correctly implement the service() and mapper() methods. Note the IntelliJ warning resulting from the @NonNull annotation.
 
     private final ReviewService reviewService;
     private final ReviewDtoMapper reviewDtoMapper;
@@ -56,7 +55,6 @@ public class ReviewController extends CrudController<Review, ReviewDto, Long> {
         return super.getAll();
     }
 
-    // TODO: Implement the missing methods/endpoints.
 
     @Operation
     @CrudOperation(operation=GET_BY_ID, resource=REVIEW)
