@@ -2,9 +2,11 @@ package de.seuhd.campuscoffee.api.controller;
 
 import de.seuhd.campuscoffee.api.dtos.ReviewDto;
 import de.seuhd.campuscoffee.api.mapper.DtoMapper;
+import de.seuhd.campuscoffee.api.mapper.ReviewDtoMapper;
 import de.seuhd.campuscoffee.api.openapi.CrudOperation;
 import de.seuhd.campuscoffee.domain.model.objects.Review;
 import de.seuhd.campuscoffee.domain.ports.api.CrudService;
+import de.seuhd.campuscoffee.domain.ports.api.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,14 +35,18 @@ public class ReviewController extends CrudController<Review, ReviewDto, Long> {
 
     // TODO: Correctly implement the service() and mapper() methods. Note the IntelliJ warning resulting from the @NonNull annotation.
 
+    private final ReviewService reviewService;
+    private final ReviewDtoMapper reviewDtoMapper;
+
+
     @Override
     protected @NonNull CrudService<Review, Long> service() {
-        return null;
+        return reviewService;
     }
 
     @Override
     protected @NonNull DtoMapper<Review, ReviewDto> mapper() {
-        return null;
+        return reviewDtoMapper;
     }
 
     @Operation
@@ -93,19 +99,32 @@ public class ReviewController extends CrudController<Review, ReviewDto, Long> {
     @Operation
     @CrudOperation(operation=FILTER, resource=REVIEW)
     @GetMapping("/filter")
-    public ResponseEntity<ReviewDto> filter(
-            @Parameter(description="Filter criteria for reviews.", required=true)
+    public ResponseEntity<List<ReviewDto>> filter(
+            @Parameter(description="pos id to filter reviews.", required=true)
             @RequestParam("pos_id") Long posId,
+            @Parameter(description="Approval status to filter reviews.", required=true)
             @RequestParam("approved") Boolean approved) {
+        return ResponseEntity.ok(
+                reviewService.filter(posId, approved).stream()
+                        .map(reviewDtoMapper::fromDomain)
+                        .toList()
+        );
     }
 
     @Operation
+    @CrudOperation(operation=UPDATE, resource=REVIEW)
     @PostMapping("/{id}/approve")
     public  ResponseEntity<ReviewDto> approve(
             @Parameter(description="Unique identifier of the review to approve.", required=true)
             @PathVariable Long id,
-            @RequestParam("user_id") Long userId) { }
-
+            @Parameter(description="Unique identifier of the user approving the review.", required=true)
+            @RequestParam("user_id") Long userId) {
+        Review review = reviewService.getById(id);
+        return ResponseEntity.ok(
+                reviewDtoMapper.fromDomain(
+                        reviewService.approve(review, userId)
+                )
+        );
         }
 
 }
