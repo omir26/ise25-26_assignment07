@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 public record ReviewDto (
     @Nullable Long id,
-    // TODO: Implement ReviewDto
     @Nullable LocalDateTime createdAt,
     @Nullable LocalDateTime updatedAt,
 

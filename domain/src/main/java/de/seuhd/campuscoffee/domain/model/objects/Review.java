@@ -16,7 +16,6 @@ public record Review(
         @Nullable Long id, // null when the review has not been created yet
         @Nullable LocalDateTime createdAt, // set on review creation
         @Nullable LocalDateTime updatedAt, // set on review creation and update
-        //TODO: Implement review domain model.
         @NonNull Integer approvalCount, // is updated by the domain module
         @NonNull Boolean approved, // is determined by the domain module
 
