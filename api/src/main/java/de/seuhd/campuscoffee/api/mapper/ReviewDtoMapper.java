@@ -16,7 +16,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 @Mapper(componentModel = "spring")
 @ConditionalOnMissingBean // prevent IntelliJ warning about duplicate beans
 public abstract class ReviewDtoMapper implements DtoMapper<Review, ReviewDto> {
-    // TODO: Uncomment this after implementing Review and ReviewDto.
     @Autowired
     @SuppressWarnings("unused") // used in @Mapping expressions
     protected PosService posService;
