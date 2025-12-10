@@ -23,7 +23,10 @@ public class ReviewServiceImpl extends CrudServiceImpl<Review, Long> implements 
     private final ReviewDataService reviewDataService;
     private final UserDataService userDataService;
     private final PosDataService posDataService;
+    private final ApprovalConfiguration approvalConfiguration;
     // TODO: Try to find out the purpose of this class and how it is connected to the application.yaml configuration file.
+
+
     private final ApprovalConfiguration approvalConfiguration;
 
     public ReviewServiceImpl(@NonNull ReviewDataService reviewDataService,
@@ -46,6 +49,24 @@ public class ReviewServiceImpl extends CrudServiceImpl<Review, Long> implements 
     @Transactional
     public @NonNull Review upsert(@NonNull Review review) {
         // TODO: Implement the missing business logic here
+        // Validate POS exists
+        if (posDataService.getById(review.pos().getId()) == null) {
+            throw new ValidationException("POS does not exist: " + review.pos().getId());
+        }
+
+        // Validate author exists
+        if (userDataService.getById(review.author().id()) == null) {
+            throw new ValidationException("Author does not exist: " + review.author().id());
+        }
+
+        // Check duplicate review for same POS and author
+        List<Review> existingReviews = reviewDataService.filter(review.pos(), review.author());
+        if (!existingReviews.isEmpty()) {
+            throw new ValidationException("User cannot create more than one review per POS.");
+        }
+
+        // Update approval status before saving
+        review = updateApprovalStatus(review);
 
         return super.upsert(review);
     }
@@ -61,23 +82,33 @@ public class ReviewServiceImpl extends CrudServiceImpl<Review, Long> implements 
     public @NonNull Review approve(@NonNull Review review, @NonNull Long userId) {
         log.info("Processing approval request for review with ID '{}' by user with ID '{}'...",
                 review.getId(), userId);
+        // Validate user exists
+        User user = userDataService.getById(userId);
+        if (user == null) {
+            throw new ValidationException("User not found: " + userId);
+        }
 
-        // validate that the user exists
-        // TODO: Implement the required business logic here
+        // Validate review exists
+        Review existingReview = reviewDataService.getById(review.getId());
+        if (existingReview == null) {
+            throw new ValidationException("Review not found: " + review.getId());
+        }
 
-        // validate that the review exists
-        // TODO: Implement the required business logic here
+        // Prevent author from approving their own review
+        if (existingReview.author().id().equals(userId)) {
+            throw new ValidationException("User cannot approve their own review.");
+        }
 
-        // a user cannot approve their own review
-        // TODO: Implement the required business logic here
+        // Increment approval count
+        existingReview = existingReview.toBuilder()
+                .approvalCount(existingReview.approvalCount() + 1)
+                .build();
 
-        // increment approval count
-        // TODO: Implement the required business logic here
+        // Update approval status
+        existingReview = updateApprovalStatus(existingReview);
 
-        // update approval status to determine if the review now reaches the approval quorum
-        // TODO: Implement the required business logic here
-
-        return reviewDataService.upsert(review);
+        return reviewDataService.upsert(existingReview);
+        //return reviewDataService.upsert(review);
     }
 
     /**

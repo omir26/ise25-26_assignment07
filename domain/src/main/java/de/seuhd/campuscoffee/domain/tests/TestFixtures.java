@@ -73,32 +73,32 @@ public class TestFixtures {
                     .build()
     );
 
-//    private static final List<Review> REVIEW_LIST = List.of(
-//            Review.builder()
-//                    .id(1L).createdAt(DATE_TIME).updatedAt(DATE_TIME)
-//                    .pos(POS_LIST.getFirst())
-//                    .author(USER_LIST.getFirst())
-//                    .review("Great place!")
-//                    .approved(false)
-//                    .approvalCount(2)
-//                    .build(),
-//            Review.builder()
-//                    .id(2L).createdAt(DATE_TIME).updatedAt(DATE_TIME)
-//                    .pos(POS_LIST.getFirst())
-//                    .author(USER_LIST.get(1))
-//                    .review("Very nice place!")
-//                    .approved(true)
-//                    .approvalCount(3)
-//                    .build(),
-//            Review.builder()
-//                    .id(3L).createdAt(DATE_TIME).updatedAt(DATE_TIME)
-//                    .pos(POS_LIST.getLast())
-//                    .author(USER_LIST.getLast())
-//                    .review("This place is really bad!")
-//                    .approved(false)
-//                    .approvalCount(0)
-//                    .build()
-//    );
+    private static final List<Review> REVIEW_LIST = List.of(
+            Review.builder()
+                    .id(1L).createdAt(DATE_TIME).updatedAt(DATE_TIME)
+                    .pos(POS_LIST.getFirst())
+                    .author(USER_LIST.getFirst())
+                    .review("Great place!")
+                    .approved(false)
+                    .approvalCount(2)
+                    .build(),
+            Review.builder()
+                    .id(2L).createdAt(DATE_TIME).updatedAt(DATE_TIME)
+                    .pos(POS_LIST.getFirst())
+                    .author(USER_LIST.get(1))
+                    .review("Very nice place!")
+                    .approved(true)
+                    .approvalCount(3)
+                    .build(),
+            Review.builder()
+                    .id(3L).createdAt(DATE_TIME).updatedAt(DATE_TIME)
+                    .pos(POS_LIST.getLast())
+                    .author(USER_LIST.getLast())
+                    .review("This place is really bad!")
+                    .approved(false)
+                    .approvalCount(0)
+                    .build()
+    );
 
     public static List<User> getUserFixtures() {
         return USER_LIST.stream()
@@ -124,17 +124,17 @@ public class TestFixtures {
                 .toList();
     }
 
-//    public static List<Review> getReviewFixtures() {
-//        return REVIEW_LIST.stream()
-//                .map(SerializationUtils::clone) // prevent issues when tests modify the fixture objects
-//                .toList();
-//    }
+    public static List<Review> getReviewFixtures() {
+        return REVIEW_LIST.stream()
+                .map(SerializationUtils::clone) // prevent issues when tests modify the fixture objects
+                .toList();
+    }
 
-//    public static List<Review> getReviewFeaturesForInsertion() {
-//        return getReviewFixtures().stream()
-//                .map(review -> review.toBuilder().id(null).createdAt(null).updatedAt(null).build())
-//                .toList();
-//    }
+    public static List<Review> getReviewFeaturesForInsertion() {
+        return getReviewFixtures().stream()
+                .map(review -> review.toBuilder().id(null).createdAt(null).updatedAt(null).build())
+                .toList();
+    }
 
     public static List<User> createUserFixtures(UserService userService) {
         return getUserFixturesForInsertion().stream()
@@ -148,11 +148,11 @@ public class TestFixtures {
                 .collect(Collectors.toList());
     }
 
-//    public static List<Review> createReviewFixtures(ReviewService reviewService) {
-//        return getReviewFeaturesForInsertion().stream()
-//                .map(reviewService::upsert)
-//                .collect(Collectors.toList());
-//    }
+    public static List<Review> createReviewFixtures(ReviewService reviewService) {
+        return getReviewFeaturesForInsertion().stream()
+                .map(reviewService::upsert)
+                .collect(Collectors.toList());
+    }
 
     public static ApprovalConfiguration getApprovalConfiguration() {
         return new ApprovalConfiguration(MIN_APPROVAL_COUNT);
