@@ -4,8 +4,10 @@ import de.seuhd.campuscoffee.domain.configuration.ApprovalConfiguration;
 import de.seuhd.campuscoffee.domain.model.enums.CampusType;
 import de.seuhd.campuscoffee.domain.model.enums.PosType;
 import de.seuhd.campuscoffee.domain.model.objects.Pos;
+import de.seuhd.campuscoffee.domain.model.objects.Review;
 import de.seuhd.campuscoffee.domain.model.objects.User;
 import de.seuhd.campuscoffee.domain.ports.api.PosService;
+import de.seuhd.campuscoffee.domain.ports.api.ReviewService;
 import de.seuhd.campuscoffee.domain.ports.api.UserService;
 import org.apache.commons.lang3.SerializationUtils;
 

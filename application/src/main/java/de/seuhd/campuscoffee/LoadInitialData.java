@@ -1,7 +1,9 @@
 package de.seuhd.campuscoffee;
 
 import de.seuhd.campuscoffee.domain.model.objects.Pos;
+import de.seuhd.campuscoffee.domain.model.objects.Review;
 import de.seuhd.campuscoffee.domain.model.objects.User;
+import de.seuhd.campuscoffee.domain.ports.api.ReviewService;
 import de.seuhd.campuscoffee.domain.ports.api.UserService;
 import de.seuhd.campuscoffee.domain.tests.TestFixtures;
 import de.seuhd.campuscoffee.domain.ports.api.PosService;

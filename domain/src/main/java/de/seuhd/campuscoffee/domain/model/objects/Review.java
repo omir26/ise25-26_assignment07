@@ -19,8 +19,8 @@ public record Review(
         @NonNull Integer approvalCount, // is updated by the domain module
         @NonNull Boolean approved, // is determined by the domain module
 
-        @NotNull Long authorId, // reference to the user who wrote the review
-        @NotNull Long posId, // reference to the point of sale being reviewed
+        @NotNull User author, // reference to the user who wrote the review
+        @NotNull Pos pos, // reference to the point of sale being reviewed
         @NonNull String review // the review text
 ) implements DomainModel<Long> {
     @Override
