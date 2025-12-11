@@ -4,12 +4,11 @@ import de.seuhd.campuscoffee.domain.configuration.ApprovalConfiguration;
 import de.seuhd.campuscoffee.domain.model.enums.CampusType;
 import de.seuhd.campuscoffee.domain.model.enums.PosType;
 import de.seuhd.campuscoffee.domain.model.objects.Pos;
-import de.seuhd.campuscoffee.domain.model.objects.Review;
 import de.seuhd.campuscoffee.domain.model.objects.User;
 import de.seuhd.campuscoffee.domain.ports.api.PosService;
 import de.seuhd.campuscoffee.domain.ports.api.UserService;
 import org.apache.commons.lang3.SerializationUtils;
-import de.seuhd.campuscoffee.domain.ports.api.ReviewService;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,24 +76,24 @@ public class TestFixtures {
     private static final List<Review> REVIEW_LIST = List.of(
             Review.builder()
                     .id(1L).createdAt(DATE_TIME).updatedAt(DATE_TIME)
-                    .posId(POS_LIST.getFirst().id())
-                    .authorId(USER_LIST.getFirst().id())
+                    .pos(POS_LIST.getFirst())
+                    .author(USER_LIST.getFirst())
                     .review("Great place!")
                     .approved(false)
                     .approvalCount(2)
                     .build(),
             Review.builder()
                     .id(2L).createdAt(DATE_TIME).updatedAt(DATE_TIME)
-                    .posId(POS_LIST.getFirst().id())
-                    .authorId(USER_LIST.get(1).id())
+                    .pos(POS_LIST.getFirst())
+                    .author(USER_LIST.get(1))
                     .review("Very nice place!")
                     .approved(true)
                     .approvalCount(3)
                     .build(),
             Review.builder()
                     .id(3L).createdAt(DATE_TIME).updatedAt(DATE_TIME)
-                    .posId(POS_LIST.getLast().id())
-                    .authorId(USER_LIST.getLast().id())
+                    .pos(POS_LIST.getLast())
+                    .author(USER_LIST.getLast())
                     .review("This place is really bad!")
                     .approved(false)
                     .approvalCount(0)
